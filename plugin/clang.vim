@@ -4,7 +4,7 @@ vim9script
 if exists('g:clang_loaded')
   finish
 endif
-g:clang_loaded = 1
+g:clang_loaded = 0
 
 if !exists('g:clang_auto')
   g:clang_auto = v:true
@@ -625,7 +625,7 @@ def ClangCompleteInit(force: bool)
     return
   endif
 
-  PDebug("ClangCompleteInit", "start")
+  # PDebug("ClangCompleteInit", "start")
 
   # Firstly, add clang options for current buffer file
   b:clang_options = ''
@@ -850,7 +850,7 @@ def ClangExecute(root: string, clang_options: string, line: number, col: number,
   silent execute 'lcd ' .. root
   var src = join(getline(1, '$'), "\n") .. "\n"
   # shorter version, without redirecting stdout and stderr
-  const command = printf('%s -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-at=-:%d:%d %s -',
+  const command = printf('%s -w -fsyntax-only -Xclang -code-completion-macros -Xclang -code-completion-at=-:%d:%d %s -',
                       \ g:clang_exec, line, col, clang_options)
 
   PDebug("s:ClangExecute::command", command, 2)
